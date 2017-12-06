@@ -1,0 +1,77 @@
+#! /usr/bin/env python
+import sys
+sys.path.insert(0, sys.path[0]+'/waf_tools')
+
+import os
+import limbo
+import mcts
+import ros
+import hexa_control
+import hexapod_dart
+
+def options(opt):
+    opt.load('mcts')
+    opt.load('hexapod_controller')
+    opt.load('hexapod_dart')
+    opt.load('ros')
+    opt.load('hexa_control')
+
+    opt.add_option('--robot', action='store_true', help='build for real robot (no graphic, no simulator)[true/false]', dest='robot')
+
+def configure(conf):
+    conf.get_env()['BUILD_GRAPHIC'] = False
+    conf.get_env()['BUILD_ROBOT'] = False
+
+    conf.load('hexapod_dart')
+    conf.check_hexapod_dart()
+
+    conf.load('mcts')
+    conf.check_mcts()
+
+    if conf.options.robot:
+      conf.load('ros')
+      conf.load('hexa_control')
+      conf.check_ros()
+      conf.check_hexa_control()
+      if conf.env.DEFINES_ROS:
+        conf.get_env()['BUILD_ROBOT'] = True
+
+
+def build(bld):
+    libs = 'HEXAPOD_CONTROLLER DART MCTS ROS TBB EIGEN BOOST_DART BOOST ROS DYNAMIXEL LIMBO LIBCMAES NLOPT SFERES2 BOOST_CHRONO RT '
+    graphic_libs = 'DART_GRAPHIC ' + libs
+    robot_libs = 'HEXACONTROL ' + libs
+    cxxflags = bld.get_env()['CXXFLAGS']
+
+    obj = bld.program(features='cxx',
+                      source='save_archive.cpp',
+                      includes='. ../../src ../ ./include',
+                      target='save_archive',
+                      uselib=libs,
+                      use='limbo')
+
+    limbo.create_variants(bld,
+                      source = 'rte_hexa.cpp',
+                      uselib_local = 'limbo',
+                      uselib = libs,
+                      includes=". ../../src ../ ./include",
+                      cxxflags = cxxflags,
+                      variants = ['SIMU LOW_DIM'])
+
+    if bld.get_env()['BUILD_GRAPHIC'] == True:
+        limbo.create_variants(bld,
+                              source = 'rte_hexa.cpp',
+                              uselib_local = 'limbo',
+                              uselib = graphic_libs,
+                              includes=". ../../src ../ ./include",
+                              cxxflags = cxxflags,
+                              variants = ['GRAPHIC LOW_DIM'])
+
+    if bld.get_env()['BUILD_ROBOT'] == True:
+      limbo.create_variants(bld,
+                            source = 'mcts_hexa.cpp',
+                            uselib_local = 'limbo',
+                            uselib = robot_libs,
+                            includes=". ../../src ../ ./include",
+                            cxxflags = cxxflags,
+                            variants = ['ROBOT LOW_DIM'])

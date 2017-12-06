@@ -1,0 +1,49 @@
+#! /usr/bin/env python
+import sys
+sys.path.insert(0, sys.path[0]+'/waf_tools')
+
+import os, commands
+import sferes
+
+def options(opt):
+    opt.load('eigen')
+    opt.load('sdl')
+    opt.load('libfastsim')
+
+def configure(conf):
+    conf.load('eigen')
+    conf.check_eigen()
+
+    conf.load('sdl')
+    conf.check_sdl()
+
+    conf.load('libfastsim')
+    conf.check_libfastsim()
+
+def build(bld):
+    libs = 'EIGEN BOOST TBB LIBFASTSIM '
+    cxxflags = bld.get_env()['CXXFLAGS']
+
+    sferes.create_variants(bld,
+                           source = 'mobile.cpp',
+                           use = 'sferes2',
+                           uselib = libs,
+                           includes = '. ../ ../../',
+                           target = 'mobile',
+                           variants = ['TEXT'])
+
+    if bld.env.DEFINES_SDL == ['USE_SDL']:
+        sferes.create_variants(bld,
+                               source = 'replay_mobile.cpp',
+                               use = 'sferes2',
+                               uselib = libs + ' SDL ',
+                               includes = '. ../ ../../',
+                               target = 'replay_mobile',
+                               variants = ['GRAPHIC'])
+        sferes.create_variants(bld,
+                               source = 'mobile.cpp',
+                               use = 'sferes2',
+                               uselib = libs + ' SDL ',
+                               includes = '. ../ ../../',
+                               target = 'mobile',
+                               variants = ['GRAPHIC'])

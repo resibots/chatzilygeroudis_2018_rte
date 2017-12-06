@@ -1,0 +1,49 @@
+#! /usr/bin/env python
+import sys
+sys.path.insert(0, sys.path[0]+'/waf_tools')
+
+import os
+import limbo
+
+def options(opt):
+    opt.load('mcts')
+    opt.load('sdl')
+    opt.load('libfastsim')
+
+def configure(conf):
+    conf.load('mcts')
+    conf.check_mcts()
+
+    conf.load('sdl')
+    conf.check_sdl()
+
+    conf.load('libfastsim')
+    conf.check_libfastsim()
+
+
+def build(bld):
+    libs = 'EIGEN BOOST TBB MCTS LIBCMAES NLOPT LIBFASTSIM '
+
+    obj = bld.program(features='cxx',
+                      source='save_archive.cpp',
+                      includes='. ../../src ../ ./include',
+                      target='save_archive',
+                      uselib=libs,
+                      use='limbo')
+
+    limbo.create_variants(bld,
+                           source = 'rte_mobile.cpp',
+                           uselib_local = 'limbo',
+                           uselib = libs,
+                           includes = '. ../../src ../ ./include',
+                           target = 'rte_mobile',
+                           variants = ['TEXT', 'TEXPLORE TEXT'])
+
+    if bld.env.DEFINES_SDL == ['USE_SDL']:
+        limbo.create_variants(bld,
+                               source = 'rte_mobile.cpp',
+                               uselib_local = 'limbo',
+                               uselib = libs + ' SDL ',
+                               includes = '. ../../src ../ ./include',
+                               target = 'rte_mobile',
+                               variants = ['GRAPHIC', 'TEXPLORE GRAPHIC'])

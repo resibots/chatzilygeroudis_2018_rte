@@ -1,0 +1,23 @@
+*~
+*#
+.DS_Store
+.project
+.settings
+.classpath
+.metadata
+*.o
+*.a
+*.pyc
+*.err
+*.log
+.lock-waf*
+.waf-*
+build
+waf_xcode.sh
+src/tests/combinations
+params_*
+benchmark_results
+
+# Ignored folders for the documentation
+_build
+doxygen_doc

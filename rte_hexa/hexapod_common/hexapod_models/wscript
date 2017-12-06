@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+# encoding: utf-8
+
+VERSION = '0.0.1'
+APPNAME = 'hexapod_models'
+
+srcdir = '.'
+blddir = 'build'
+
+from waflib.Build import BuildContext
+
+
+def options(opt):
+    pass
+
+
+def configure(conf):
+    pass
+
+
+def build(bld):
+    bld.install_files('${PREFIX}/share/hexapod_models', bld.path.ant_glob('URDF/**'),
+                  relative_trick=True)
