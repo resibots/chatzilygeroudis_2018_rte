@@ -8,6 +8,24 @@
 - CNRS, France
 - University of Lorraine, France
 
+### Citing this code
+
+If you use our code for a scientific paper, please cite:
+
+Chatzilygeroudis, K., Vassiliades, V., & Mouret, J.-B. (2018). [Reset-free Trial-and-Error Learning for Robot Damage Recovery](https://arxiv.org/abs/1610.04213). *Robotics and Autonomous Systems*.
+
+In BibTex:
+
+    @article{Chatzilygeroudis2017,
+      title = {{Reset-free Trial-and-Error Learning for Robot Damage Recovery}},
+      journal = {Robotics and Autonomous Systems},
+      year = {2018},
+      issn = {0921-8890},
+      doi = {https://doi.org/10.1016/j.robot.2017.11.010},
+      url = {https://www.sciencedirect.com/science/article/pii/S0921889017302440},
+      author = {Chatzilygeroudis, Konstantinos and Vassiliades, Vassilis and Mouret, Jean-Baptiste},
+      organization={Elsevier}
+    }
 
 #### Dependencies
 
