@@ -16,7 +16,7 @@ Chatzilygeroudis, K., Vassiliades, V., & Mouret, J.-B. (2018). [Reset-free Trial
 
 In BibTex:
 
-    @article{Chatzilygeroudis2017,
+    @article{chatzilygeroudis2018resetfree,
       title = {{Reset-free Trial-and-Error Learning for Robot Damage Recovery}},
       journal = {Robotics and Autonomous Systems},
       year = {2018},
