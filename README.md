@@ -20,6 +20,8 @@ In BibTex:
       title = {{Reset-free Trial-and-Error Learning for Robot Damage Recovery}},
       journal = {Robotics and Autonomous Systems},
       year = {2018},
+      volume = {100},
+      pages = {236 - 250},
       issn = {0921-8890},
       doi = {https://doi.org/10.1016/j.robot.2017.11.010},
       url = {https://www.sciencedirect.com/science/article/pii/S0921889017302440},
